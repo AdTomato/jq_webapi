@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.authine.cloudpivot.web.api.mapper.DailyPaperMapper">
+    <!--视图返回信息-property是实体类中字段；column是数据库中字段 -->
+    <resultMap id="workFlowTypeInfo" type="java.util.Map">
+        <id property="workFlowType" column="workFlowType" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="title" column="title" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="workOrderType" column="workOrderType" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="workContent" column="workContent" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="beginDate" column="beginDate" javaType="date" jdbcType="VARCHAR"/>
+        <id property="endDate" column="endDate" javaType="date" jdbcType="VARCHAR"/>
+        <id property="workPersons" column="workPersons" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="workResult" column="workResult" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="workOrderId" column="workOrderId" javaType="STRING" jdbcType="VARCHAR"/>
+        <!-- collection 标签需放在最后 column 相当于引用的字段-->
+        <collection property="userList" column="workPersons"
+                    select="com.authine.cloudpivot.web.api.mapper.DailyPaperMapper.getUserInfo"/>
+    </resultMap>
+
+    <resultMap id="userList" type="java.util.Map">
+        <id property="personName" column="personName" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="imgUrl" column="imgUrl" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="personId" column="personId" javaType="STRING" jdbcType="VARCHAR"/>
+        <id property="type" column="type" javaType="STRING" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getDailyTimeNum" resultType="int">
+        SELECT dailyNumber
+        FROM i07d5_modify_daily_number
+        Order By createdTime desc
+        limit 1
+    </select>
+
+    <select id="getviewWorkOrderInfo" resultMap="workFlowTypeInfo">
+        SELECT
+               a.id AS workOrderId,
+               a.workFlowType,
+               a.title,
+               a.workOrderType,
+               a.workContent,
+               a.beginDate,
+               a.endDate,
+               a.workPersons,
+               IFNULL(a.workResult, '') as workResult
+        from viewWorkOrder a
+        where a.workPersons LIKE concat('%', #{userId}, '%')
+           OR a.otherWorkPersons LIKE concat('%', #{userId}, '%')
+            and (a.endDate is null OR a.endDate > date_add(now(), interval -5 day))
+        ORDER BY a.id, a.sortKey
+    </select>
+
+    <select id="getUserInfo" resultMap="userList">
+        SELECT b.name as personName,
+               b.imgUrl,
+               b.id   as personId,
+               3      as type
+        from h_org_user b
+        where #{workPersons} like concat('%', b.id, '%')
+    </select>
+
+
+    <select id="getRefuseId" resultType="java.lang.String">
+        SELECT id
+        from iswz0_daily_paper
+        where creater = #{userId}
+          AND date_format(dailyTime, '%Y-%m-%d') = date_format(#{date}, '%Y-%m-%d')
+          AND id != #{objectId}
+    </select>
+
+    <delete id="batchDelete">
+        delete from iswz0_daily_paper
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

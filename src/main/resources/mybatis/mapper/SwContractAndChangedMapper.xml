@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.authine.cloudpivot.web.api.mapper.SwContractAndChangedMapper">
+    <!-- 查询合同变更 -->
+    <select id="selectById" parameterType="java.lang.String"
+            resultType="com.authine.cloudpivot.web.api.entity.SwContractAndChanged">
+        SELECT *
+        from inbk5_sw_buy_contract_changed
+        where id = #{id}
+    </select>
+
+    <!-- 插入合同管理 -->
+    <insert id="insertSwConstract" parameterType="com.authine.cloudpivot.web.api.entity.SwContractAndChanged">
+        INSERT INTO inbk5_sw_buy_contract
+        (id, name, creater, createdDeptId, owner, ownerDeptId, createdTime, modifier, modifiedTime, sequenceNo,
+         sequenceStatus, ownerDeptQueryCode, sw_buy_apply_id, contract_no, contract_short_name, contract_name, changed,
+         changed_pid, change_remark, contract_version, deleted, states)
+        values (#{id}, #{ name}, #{creater}, #{ createdDeptId}, #{owner}, #{ownerDeptId}, #{createdTime}, #{modifier},
+                #{modifiedTime}, #{sequenceNo}, #{
+     sequenceStatus}, #{ownerDeptQueryCode}, #{swBuyApplyId}, #{contractNo}, #{contractShortName}, #{contractName},
+                #{changed}, #{
+     changedPid}, #{changeRemark}, #{contractVersion}, #{deleted}, #{states})
+    </insert>
+</mapper>

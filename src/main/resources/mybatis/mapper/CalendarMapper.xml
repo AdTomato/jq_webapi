@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.authine.cloudpivot.web.api.mapper.CalendarMapper">
+    <select id="getOneMonthCalendar" resultType="com.authine.cloudpivot.web.api.entity.SysCalendar">
+        SELECT *
+        FROM i07d5_sys_calendar
+        WHERE JSON_CONTAINS(person, JSON_OBJECT('id', #{userId}))
+          AND year = #{year}
+          AND month = #{month}
+    </select>
+    <select id="getOneWeekCalender" resultType="com.authine.cloudpivot.web.api.entity.SysCalendar">
+        select *
+        from i07d5_sys_calendar
+        where JSON_CONTAINS(person, JSON_OBJECT('id', #{userId}))
+          and year = #{yearMonthDay.year}
+          and month = #{yearMonthDay.month}
+          and day = #{yearMonthDay.day}
+    </select>
+
+    <select id="getOneDayCalender" resultType="com.authine.cloudpivot.web.api.entity.SysCalendar">
+        SELECT *
+        FROM i07d5_sys_calendar
+        WHERE JSON_CONTAINS(person, JSON_OBJECT('id', #{userId}))
+          AND year = #{year}
+          AND month = #{month}
+          AND day = #{day}
+    </select>
+
+    <select id="search" resultType="com.authine.cloudpivot.web.api.entity.SysCalendar">
+        select *
+        from i07d5_sys_calendar
+        where JSON_CONTAINS(person, JSON_OBJECT('id', #{person}))
+          AND year = #{year}
+          AND month = #{month}
+          AND day = #{day}
+    </select>
+
+    <update id="updateCalendar" parameterType="com.authine.cloudpivot.web.api.entity.SysCalendar">
+        update
+        i07d5_sys_calendar
+        <trim prefix="set" suffixOverrides=",">
+            <if test="person !=null">person = #{person},</if>
+            <if test="month !=null">month = #{month},</if>
+            <if test="day !=null">day = #{day},</if>
+            <if test="dayType !=null">day_type = #{dayType},</if>
+            <if test="workSetting !=null">work_setting = #{workSetting},</if>
+            <if test="relatedId !=null">related_id = #{relatedId},</if>
+            <if test="relatedName !=null">related_id = #{relatedName},</if>
+            <if test="workContent !=null">work_content = #{workContent},</if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

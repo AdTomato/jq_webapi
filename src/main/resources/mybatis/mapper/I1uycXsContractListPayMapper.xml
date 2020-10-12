@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.authine.cloudpivot.web.api.mapper.I1uycXsContractListPayMapper">
+    <!-- 批量插入合同变更子表 -->
+    <insert id="insertI1uycXsContractListPay" parameterType="java.util.List">
+        INSERT INTO i1uyc_xs_contract_list_pay
+        (id,money,summary,abstrac,parentId,sortKey,expected_receipt_date)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.money},#{item.summary},#{item.abstrac},#{item.parentId},#{item.sortKey},#{item.expectedReceiptDate})
+        </foreach>
+
+    </insert>
+
+    <!-- 插入采购合同变更子表 -->
+    <insert id="insertSwBuyContractChangeDetail"
+            parameterType="com.authine.cloudpivot.web.api.entity.SwBuyContractChangeDetail">
+        INSERT INTO inbk5_sw_buy_contract_detail
+        (id,supplier,contract_no,parentId,sortKey,total_money,invoice_tax_point,pay_type,invoice_type)
+        VALUES
+            (#{id},#{supplier},#{contractNo},#{parentId},#{sortKey},#{totalMoney},
+            #{invoiceTaxPoint},#{payType},#{invoiceType})
+
+    </insert>
+
+    <!-- 插入采购合同变更子表 “附件” -->
+    <insert id="insertSwBuyFujian" parameterType="com.authine.cloudpivot.web.api.entity.HBizAttachment">
+        INSERT INTO h_biz_attachment
+        (id, bizObjectId, bizPropertyCode, createdTime, creater,fileExtension, fileSize, mimeType,
+        NAME, parentBizObjectId,parentSchemaCode, refId, schemaCode)
+        VALUES
+       (#{id},#{bizObjectId},#{bizPropertyCode},now(),#{creater},#{fileExtension},#{fileSize},#{mimeType},
+       #{name},#{parentBizObjectId},#{parentSchemaCode},#{refId},#{schemaCode})
+
+    </insert>
+
+    <!--查询合同变更的子表信息-->
+    <select id="getChangeByParentId" parameterType="java.lang.String"
+            resultType="com.authine.cloudpivot.web.api.entity.I1uycXsContractListPay">
+        select * from i1uyc_xs_contract_list_pay_change where parentId = #{parentId}
+    </select>
+
+    <!--查询采购合同变更的子表 附件 信息-->
+    <select id="getFujianInfo" resultType="com.authine.cloudpivot.web.api.entity.HBizAttachment">
+        select * from h_biz_attachment where bizObjectId= #{bizObjectId}
+        <if test="parentBizObjectId != null and parentBizObjectId != ''">
+            and  parentBizObjectId = #{parentBizObjectId}
+        </if>
+        limit 1
+    </select>
+
+    <!--查询采购合同变更的子表信息-->
+    <select id="getSwChangeByParentId" parameterType="java.lang.String"
+            resultType="com.authine.cloudpivot.web.api.entity.SwBuyContractChangeDetail">
+        select * from inbk5_sw_buy_contract_chang_detail where parentId = #{parentId}
+    </select>
+
+</mapper>

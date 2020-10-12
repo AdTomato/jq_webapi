@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.authine.cloudpivot.web.api.mapper.OrgUserMapper">
+    <resultMap id="userIdToId" type="com.authine.cloudpivot.web.api.entity.OrgUser">
+        <id property="id" column="id"></id>
+        <result property="userId" column="userId"></result>
+    </resultMap>
+    <select id="getUserIdAndId" resultMap="userIdToId">
+        SELECT id, userId FROM h_org_user WHERE userId IS NOT NULL
+    </select>
+</mapper>

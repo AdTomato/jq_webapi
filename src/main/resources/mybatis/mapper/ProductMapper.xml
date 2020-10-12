@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.authine.cloudpivot.web.api.mapper.ProductMapper">
+    <select id="getProductNameList" resultType="java.lang.String">
+        SELECT product_name FROM igygx_deve_product
+    </select>
+
+    <resultMap id="productNameAndId" type="java.util.Map">
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="VARCHAR"></id>
+        <result column="product_name" property="productName" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    </resultMap>
+    <select id="getProductNameAndIdList" resultMap="productNameAndId">
+        SELECT id, product_name FROM igygx_deve_product
+    </select>
+
+</mapper>
