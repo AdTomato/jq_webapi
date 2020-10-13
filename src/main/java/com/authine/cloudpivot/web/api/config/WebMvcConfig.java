@@ -30,7 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
 
-    @Bean
+    @Bean(name = "cacheControlFilterRegistrationBean")
     public FilterRegistrationBean<Filter> corsFilterRegistrationBean() {
         FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<Filter>(new Filter() {
             @Override
