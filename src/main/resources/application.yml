@@ -174,3 +174,7 @@ cloudpivot:
     logStore: webapi_log    #web-sso日志库
   organization:
     related: false    #关联组织机构
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml  # 设置mapper的路径
+  configuration:
+    map-underscore-to-camel-case: true  # 开启驼峰命名法

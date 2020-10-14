@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.authine.cloudpivot.ext.mapper.WorkOrderMapper">
+    <select id="getInternalWorkOrderByCreator" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
+        select m.id,
+               COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
+               m.title,
+               m.sequenceNo,
+               m.sequenceStatus,
+               m.creater,
+               m.createdTime,
+               0                                        as transDepartment,
+               'CREATE'                                 as type,
+               m.owner
+        from ii84q_workFlowDeptN m
+        where creater = #{userid}
+        union
+        select m.id,
+               COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
+               m.title,
+               m.sequenceNo,
+               m.sequenceStatus,
+               m.creater,
+               m.createdTime,
+               0                                        as transDepartment,
+               'CREATE'                                 as type,
+               m.owner
+        from ii84q_workFlowDeptN m
+        where exists(select 1
+                     from ii84q_workFlowDeptN t
+                     where creater = #{userid}
+                             and m.relevanceDeptN = t.id
+                        or m.RelevanceKdept = t.id);
+    </select>
+
+    <select id="getInternalWorkOrderByRecipient" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
+        select m.id,
+               COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
+               m.title,
+               m.sequenceNo,
+               m.sequenceStatus,
+               m.creater,
+               m.createdTime,
+               0                                        as transDepartment,
+               'RECEIVE'                                as type,
+               m.owner
+        from ii84q_Sheet1601021060092 s
+                     inner join ii84q_workFlowDeptN m
+                on s.parentId = m.id
+        where json_contains(person, json_object('id', #{userId,jdbcType=VARCHAR}));
+    </select>
+</mapper>

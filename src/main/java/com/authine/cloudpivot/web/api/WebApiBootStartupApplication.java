@@ -12,11 +12,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author longhai
  */
 @SpringBootApplication(
-        scanBasePackages = {"com.authine.cloudpivot.web.api", "com.authine.cloudpivot.web.sso", "com.authine.cloudpivot.ext.controller"}
+        scanBasePackages = {
+                "com.authine.cloudpivot.web.api",
+                "com.authine.cloudpivot.web.sso",
+                "com.authine.cloudpivot.ext"
+        }
 )
 @EnableSwagger2
 @EnableRedisHttpSession
-@MapperScan("com.authine.cloudpivot.web.api.mapper")
+@MapperScan({"com.authine.cloudpivot.web.api.mapper", "com.authine.cloudpivot.ext.mapper"})
 public class WebApiBootStartupApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
