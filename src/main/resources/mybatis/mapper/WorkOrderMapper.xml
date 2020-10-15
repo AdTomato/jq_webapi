@@ -9,21 +9,21 @@
                COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
                m.title,
                m.sequenceNo,
-               m.sequenceStatus,
-               m.creater,
+               m.sequenceStatus                         as status,
+               m.creater                                as creator,
                m.createdTime,
                0                                        as transDepartment,
                'CREATE'                                 as type,
                m.owner
         from ii84q_workFlowDeptN m
-        where creater = #{userid}
+        where creater = #{userid,jdbcType=VARCHAR}
         union
         select m.id,
                COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
                m.title,
                m.sequenceNo,
-               m.sequenceStatus,
-               m.creater,
+               m.sequenceStatus                         as status,
+               m.creater                                as creator,
                m.createdTime,
                0                                        as transDepartment,
                'CREATE'                                 as type,
@@ -31,7 +31,7 @@
         from ii84q_workFlowDeptN m
         where exists(select 1
                      from ii84q_workFlowDeptN t
-                     where creater = #{userid}
+                     where creater = #{userid,jdbcType=VARCHAR}
                              and m.relevanceDeptN = t.id
                         or m.RelevanceKdept = t.id);
     </select>
@@ -51,5 +51,11 @@
                      inner join ii84q_workFlowDeptN m
                 on s.parentId = m.id
         where json_contains(person, json_object('id', #{userId,jdbcType=VARCHAR}));
+    </select>
+
+    <select id="getAssistWorkOrderByCreator" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
+    </select>
+
+    <select id="getAssistWorkOrderByRecipient" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
     </select>
 </mapper>

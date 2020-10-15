@@ -27,20 +27,20 @@ public interface WorkOrderMapper {
      */
     List<WorkOrder> getInternalWorkOrderByRecipient(String userId);
 
-//    /**
-//     * 根据创建人获取工单
-//     *
-//     * @param userId 用户ID
-//     * @return List<WorkOrder>
-//     */
-//    List<WorkOrder> getWorkOrderByCreator(String userId);
-//
-//    /**
-//     * 根据拥有则获取工单
-//     *
-//     * @param userId 用户ID
-//     * @return List<WorkOrder>
-//     */
-//    List<WorkOrder> getWorkOrderByOwner(String userId);
+    /**
+     * 根据创建人获取协助（跨部门）工单
+     *
+     * @param userId 用户ID
+     * @return List<WorkOrder>
+     */
+    List<WorkOrder> getAssistWorkOrderByCreator(String userId);
+
+    /**
+     * 根据接收人获取协助（跨部门）工单
+     *
+     * @param userId 用户ID
+     * @return List<WorkOrder>
+     */
+    List<WorkOrder> getAssistWorkOrderByRecipient(String userId);
 
 }

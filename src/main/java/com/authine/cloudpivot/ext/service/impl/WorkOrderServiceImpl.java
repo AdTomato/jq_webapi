@@ -6,8 +6,10 @@ import com.authine.cloudpivot.ext.service.WorkOrderService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Wu Yujie
@@ -24,8 +26,16 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public List<WorkOrder> getRelevantWorkOrderByUserId(String userId) {
         List<WorkOrder> internalWorkOrderByCreator = workOrderMapper.getInternalWorkOrderByCreator(userId);
         List<WorkOrder> internalWorkOrderByRecipient = workOrderMapper.getInternalWorkOrderByRecipient(userId);
-//        List<WorkOrder> workOrderByCreator = workOrderMapper.getWorkOrderByCreator(userId);
-        return Collections.emptyList();
+        Set<WorkOrder> result = new LinkedHashSet<>();
+        result.addAll(internalWorkOrderByCreator);
+        result.addAll(internalWorkOrderByRecipient);
+        return this.treeList(new ArrayList<>(result));
+    }
+
+    @Override
+    public List<WorkOrder> treeList(List<WorkOrder> list) {
+        // TODO: 2020/10/15 17:17 转换树形结构
+        return list;
     }
 
 }

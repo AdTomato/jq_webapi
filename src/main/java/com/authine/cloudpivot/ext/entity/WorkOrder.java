@@ -21,6 +21,11 @@ public class WorkOrder {
     private WorkOrderType type;
 
     /**
+     * 是否跨部门工单
+     */
+    private Boolean transDepartment;
+
+    /**
      * 工单ID
      */
     private String id;
@@ -29,6 +34,11 @@ public class WorkOrder {
      * 父工单ID
      */
     private String parentId;
+
+    /**
+     * 标题摘要
+     */
+    private String title;
 
     /**
      * 创建人
@@ -46,9 +56,14 @@ public class WorkOrder {
     private List<String> recipient;
 
     /**
-     * 是否跨部门工单
+     * 工单状态
      */
-    private Boolean transDepartment;
+    private WorkOrderStatus status;
+
+    /**
+     * 子工单
+     */
+    private List<WorkOrder> children;
 
     @Override
     public int hashCode() {

@@ -19,4 +19,12 @@ public interface WorkOrderService {
      */
     List<WorkOrder> getRelevantWorkOrderByUserId(String userId);
 
+    /**
+     * 构建树形结构
+     *
+     * @param list List<WorkOrder>
+     * @return List<WorkOrder>
+     */
+    List<WorkOrder> treeList(List<WorkOrder> list);
+
 }

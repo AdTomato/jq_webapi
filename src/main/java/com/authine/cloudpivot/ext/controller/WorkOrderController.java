@@ -18,7 +18,7 @@ import java.util.List;
  * @time 2020/10/14 10:48
  */
 @RestController
-@RequestMapping("/work-order")
+@RequestMapping("/api/work_order")
 public class WorkOrderController extends BaseController {
 
     @Resource
