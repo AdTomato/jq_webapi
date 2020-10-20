@@ -16,11 +16,6 @@ import java.util.List;
 public class WorkOrder {
 
     /**
-     * 创建或接收的工单
-     */
-    private WorkOrderType type;
-
-    /**
      * 是否跨部门工单
      */
     private Boolean transDepartment;
@@ -51,7 +46,32 @@ public class WorkOrder {
     private Date createdTime;
 
     /**
-     * 工单任务接收人
+     * 要求完成日期
+     */
+    private Date deadline;
+
+    /**
+     * 开始时间
+     */
+    private Date startTime;
+
+    /**
+     * 结束时间
+     */
+    private Date endTime;
+
+    /**
+     * 审批人
+     */
+    private List<String> approver;
+
+    /**
+     * 执行人
+     */
+    private List<String> executor;
+
+    /**
+     * 工单任务接收人（审批人，执行人）
      */
     private List<String> recipient;
 
@@ -64,6 +84,11 @@ public class WorkOrder {
      * 子工单
      */
     private List<WorkOrder> children;
+
+    /**
+     * 紧急程度
+     */
+    private UrgencyDegree urgencyDegree;
 
     @Override
     public int hashCode() {

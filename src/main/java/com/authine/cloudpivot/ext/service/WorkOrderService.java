@@ -1,6 +1,10 @@
 package com.authine.cloudpivot.ext.service;
 
+import com.authine.cloudpivot.engine.api.exceptions.ServiceException;
 import com.authine.cloudpivot.ext.entity.WorkOrder;
+import com.authine.cloudpivot.ext.entity.WorkOrderQueryCondition;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -12,12 +16,19 @@ import java.util.List;
 public interface WorkOrderService {
 
     /**
-     * 获取用户相关的工单
+     * 获取用户创建的工单
      *
-     * @param userId 用户 ID
+     * @param condition 查询条件
      * @return List<WorkOrder>
      */
-    List<WorkOrder> getRelevantWorkOrderByUserId(String userId);
+    List<WorkOrder> getWorkOrderByCreator(WorkOrderQueryCondition condition);
+
+    /***
+     * 获取用户收到的工单
+     * @param condition 查询条件
+     * @return List<WorkOrder>
+     */
+    List<WorkOrder> getWorkOrderByRecipient(WorkOrderQueryCondition condition);
 
     /**
      * 构建树形结构
@@ -26,5 +37,22 @@ public interface WorkOrderService {
      * @return List<WorkOrder>
      */
     List<WorkOrder> treeList(List<WorkOrder> list);
+
+    /**
+     * 获取查询参数
+     *
+     * @param userId        用户ID
+     * @param title         标题摘要
+     * @param urgencyDegree 紧急程度
+     * @param overdue       是否过期
+     * @param status        工单状态
+     * @return WorkOrderQueryCondition
+     * @throws ServiceException 服务异常
+     */
+    WorkOrderQueryCondition getQuery(@NonNull String userId,
+                                     @Nullable String title,
+                                     @Nullable String urgencyDegree,
+                                     @Nullable String overdue,
+                                     @Nullable String status) throws ServiceException;
 
 }

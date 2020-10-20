@@ -4,58 +4,75 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.authine.cloudpivot.ext.mapper.WorkOrderMapper">
-    <select id="getInternalWorkOrderByCreator" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
-        select m.id,
-               COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
-               m.title,
-               m.sequenceNo,
-               m.sequenceStatus                         as status,
-               m.creater                                as creator,
-               m.createdTime,
-               0                                        as transDepartment,
-               'CREATE'                                 as type,
-               m.owner
-        from ii84q_workFlowDeptN m
-        where creater = #{userid,jdbcType=VARCHAR}
-        union
-        select m.id,
-               COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
-               m.title,
-               m.sequenceNo,
-               m.sequenceStatus                         as status,
-               m.creater                                as creator,
-               m.createdTime,
-               0                                        as transDepartment,
-               'CREATE'                                 as type,
-               m.owner
-        from ii84q_workFlowDeptN m
-        where exists(select 1
-                     from ii84q_workFlowDeptN t
-                     where creater = #{userid,jdbcType=VARCHAR}
-                             and m.relevanceDeptN = t.id
-                        or m.RelevanceKdept = t.id);
+    <resultMap id="workOrderInfo" type="com.authine.cloudpivot.ext.entity.WorkOrder">
+        <result column="approver" property="approver" javaType="java.util.List"
+                typeHandler="com.authine.cloudpivot.ext.mapper.JsonTypeHandler"/>
+        <result column="executor" property="executor" javaType="java.util.List"
+                typeHandler="com.authine.cloudpivot.ext.mapper.JsonTypeHandler"/>
+        <result column="recipient" property="recipient" javaType="java.util.List"
+                typeHandler="com.authine.cloudpivot.ext.mapper.JsonTypeHandler"/>
+    </resultMap>
+
+    <sql id="create-where">
+        <if test="entity.userId != null and entity.userId != ''">
+            and creator = #{entity.userId}
+        </if>
+    </sql>
+
+    <sql id="recipient-where">
+        <if test="entity.userId != null and entity.userId != ''">
+            and 1 = 1
+            and ( json_contains(approver, json_array(#{entity.userId}))
+            or json_contains(executor, json_array(#{entity.userId})) )
+        </if>
+    </sql>
+
+    <!-- 通用查询 -->
+    <sql id="common-select">
+        select *
+        from view_work_order
+    </sql>
+
+    <!-- 通用条件 -->
+    <sql id="common-where">
+        <!-- 标题摘要 -->
+        <if test="entity.title != null and entity.title != ''">
+            and title like concat('%',#{entity.title},'%')
+        </if>
+        <!-- 紧急程度 -->
+        <if test="entity.urgencyDegree != null">
+            and urgencyDegree = #{entity.urgencyDegree.name}
+        </if>
+        <!-- 是否逾期 -->
+        <if test="entity.overdue != null">
+            <if test="entity.overdue == true">
+                and (deadline is not null and ifnull(endTime, now()) > deadline)
+            </if>
+            <if test="entity.overdue == false">
+                <![CDATA[
+                and (deadline is null or ifnull(endTime, now()) < deadline)
+            ]]>
+            </if>
+        </if>
+        <!-- 工单状态 -->
+        <if test="entity.status != null">
+            and status = #{entity.status.name}
+        </if>
+    </sql>
+
+    <select id="getWorkOrderByCreator" resultMap="workOrderInfo">
+        <include refid="common-select"/>
+        <where>
+            <include refid="create-where"/>
+            <include refid="common-where"/>
+        </where>
     </select>
 
-    <select id="getInternalWorkOrderByRecipient" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
-        select m.id,
-               COALESCE(relevanceDeptN, RelevanceKdept) as parentId,
-               m.title,
-               m.sequenceNo,
-               m.sequenceStatus,
-               m.creater,
-               m.createdTime,
-               0                                        as transDepartment,
-               'RECEIVE'                                as type,
-               m.owner
-        from ii84q_Sheet1601021060092 s
-                     inner join ii84q_workFlowDeptN m
-                on s.parentId = m.id
-        where json_contains(person, json_object('id', #{userId,jdbcType=VARCHAR}));
-    </select>
-
-    <select id="getAssistWorkOrderByCreator" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
-    </select>
-
-    <select id="getAssistWorkOrderByRecipient" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
+    <select id="getWorkOrderByRecipient" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
+        <include refid="common-select"/>
+        <where>
+            <include refid="recipient-where"/>
+            <include refid="common-where"/>
+        </where>
     </select>
 </mapper>

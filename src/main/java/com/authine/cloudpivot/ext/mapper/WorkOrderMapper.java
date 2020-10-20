@@ -1,6 +1,8 @@
 package com.authine.cloudpivot.ext.mapper;
 
 import com.authine.cloudpivot.ext.entity.WorkOrder;
+import com.authine.cloudpivot.ext.entity.WorkOrderQueryCondition;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,35 +14,18 @@ import java.util.List;
 public interface WorkOrderMapper {
 
     /**
-     * 根据创建人获取内部工单
+     * 获取用户创建的工单
      *
-     * @param userid 用户ID
+     * @param condition 查询条件
      * @return List<WorkOrder>
      */
-    List<WorkOrder> getInternalWorkOrderByCreator(String userid);
+    List<WorkOrder> getWorkOrderByCreator(@Param("entity") WorkOrderQueryCondition condition);
 
-    /**
-     * 根据接收人获取内部工单
-     *
-     * @param userId 用户ID
+    /***
+     * 获取用户收到的工单
+     * @param condition 查询条件
      * @return List<WorkOrder>
      */
-    List<WorkOrder> getInternalWorkOrderByRecipient(String userId);
-
-    /**
-     * 根据创建人获取协助（跨部门）工单
-     *
-     * @param userId 用户ID
-     * @return List<WorkOrder>
-     */
-    List<WorkOrder> getAssistWorkOrderByCreator(String userId);
-
-    /**
-     * 根据接收人获取协助（跨部门）工单
-     *
-     * @param userId 用户ID
-     * @return List<WorkOrder>
-     */
-    List<WorkOrder> getAssistWorkOrderByRecipient(String userId);
+    List<WorkOrder> getWorkOrderByRecipient(@Param("entity") WorkOrderQueryCondition condition);
 
 }
