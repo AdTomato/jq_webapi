@@ -5,12 +5,14 @@
 
 <mapper namespace="com.authine.cloudpivot.ext.mapper.WorkOrderMapper">
     <resultMap id="workOrderInfo" type="com.authine.cloudpivot.ext.entity.WorkOrder">
-        <result column="approver" property="approver" javaType="java.util.List"
-                typeHandler="com.authine.cloudpivot.ext.mapper.JsonTypeHandler"/>
-        <result column="executor" property="executor" javaType="java.util.List"
-                typeHandler="com.authine.cloudpivot.ext.mapper.JsonTypeHandler"/>
-        <result column="recipient" property="recipient" javaType="java.util.List"
-                typeHandler="com.authine.cloudpivot.ext.mapper.JsonTypeHandler"/>
+        <result column="executor" property="approver"
+                typeHandler="com.authine.cloudpivot.ext.mybatis.handler.FastjsonTypeHandler"/>
+        <result column="department" property="department"
+                typeHandler="com.authine.cloudpivot.ext.mybatis.handler.FastjsonTypeHandler"/>
+        <result column="executor" property="executor"
+                typeHandler="com.authine.cloudpivot.ext.mybatis.handler.FastjsonTypeHandler"/>
+        <result column="recipient" property="recipient"
+                typeHandler="com.authine.cloudpivot.ext.mybatis.handler.FastjsonTypeHandler"/>
     </resultMap>
 
     <sql id="create-where">

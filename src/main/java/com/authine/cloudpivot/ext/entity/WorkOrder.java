@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Wu Yujie
@@ -66,6 +67,11 @@ public class WorkOrder {
     private List<String> approver;
 
     /**
+     * 关联部门
+     */
+    private List<String> department;
+
+    /**
      * 执行人
      */
     private List<String> executor;
@@ -73,7 +79,7 @@ public class WorkOrder {
     /**
      * 工单任务接收人（审批人，执行人）
      */
-    private List<String> recipient;
+    private Set<String> recipient;
 
     /**
      * 工单状态
