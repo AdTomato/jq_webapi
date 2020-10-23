@@ -96,6 +96,17 @@ public class WorkOrder {
      */
     private UrgencyDegree urgencyDegree;
 
+    /**
+     * 流程实例ID
+     */
+    private String workflowId;
+
+    /**
+     * 任务ID
+     */
+    private String workItemId;
+
+
     @Override
     public int hashCode() {
         return id.hashCode();

@@ -46,6 +46,8 @@ public interface WorkOrderService {
      * @param urgencyDegree 紧急程度
      * @param overdue       是否过期
      * @param status        工单状态
+     * @param pageNumber    页码
+     * @param pageSize      数据条数
      * @return WorkOrderQueryCondition
      * @throws ServiceException 服务异常
      */
@@ -53,6 +55,9 @@ public interface WorkOrderService {
                                      @Nullable String title,
                                      @Nullable String urgencyDegree,
                                      @Nullable String overdue,
-                                     @Nullable String status) throws ServiceException;
+                                     @Nullable String status,
+                                     @Nullable String pageNumber,
+                                     @Nullable String pageSize
+    ) throws ServiceException;
 
 }

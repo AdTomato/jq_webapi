@@ -34,9 +34,12 @@ public class WorkOrderController extends BaseController {
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "urgency_degree", required = false) String urgencyDegree,
             @RequestParam(name = "overdue", required = false) String overdue,
-            @RequestParam(name = "status", required = false) String status
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "page_number", required = false, defaultValue = "1") String pageNumber,
+            @RequestParam(name = "page_size", required = false, defaultValue = "10") String pageSize
     ) {
-        WorkOrderQueryCondition query = workOrderService.getQuery(userId, title, urgencyDegree, overdue, status);
+        WorkOrderQueryCondition query = workOrderService
+                .getQuery(userId, title, urgencyDegree, overdue, status, pageNumber, pageSize);
         List<WorkOrder> orders = workOrderService.getWorkOrderByCreator(query);
         return this.getOkResponseResult(orders, "获取用户创建的工单成功");
     }
@@ -51,11 +54,14 @@ public class WorkOrderController extends BaseController {
     public ResponseResult<List<WorkOrder>> getReceiveWorkOrders(
             @PathVariable("uid") String userId,
             @RequestParam(name = "title", required = false) String title,
-            @RequestParam(name = "urgencyDegree", required = false) String urgencyDegree,
+            @RequestParam(name = "urgency_degree", required = false) String urgencyDegree,
             @RequestParam(name = "overdue", required = false) String overdue,
-            @RequestParam(name = "status", required = false) String status
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "page_number", required = false, defaultValue = "1") String pageNumber,
+            @RequestParam(name = "page_size", required = false, defaultValue = "10") String pageSize
     ) {
-        WorkOrderQueryCondition query = workOrderService.getQuery(userId, title, urgencyDegree, overdue, status);
+        WorkOrderQueryCondition query = workOrderService
+                .getQuery(userId, title, urgencyDegree, overdue, status, pageNumber, pageSize);
         List<WorkOrder> orders = workOrderService.getWorkOrderByRecipient(query);
         return this.getOkResponseResult(orders, "获取用户收到的工单成功");
     }

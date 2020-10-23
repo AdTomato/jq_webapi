@@ -48,7 +48,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Override
     public WorkOrderQueryCondition getQuery(@NonNull String userId, String title, String urgencyDegree,
-                                            String overdue, String status) throws ServiceException {
+                                            String overdue, String status, String pageNumber, String pageSize)
+            throws ServiceException {
         WorkOrderQueryCondition result = new WorkOrderQueryCondition();
         result.setUserId(userId);
         if (!StringUtils.isEmpty(title)) {
@@ -72,8 +73,16 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                 result.setStatus(WorkOrderStatus.valueOf(status.toUpperCase()));
             } catch (IllegalArgumentException e) {
                 log.error(e.getMessage(), e);
-                throw new ServiceException(9999, "订单状态参数错误");
+                throw new ServiceException(-1, "订单状态参数错误");
             }
+        }
+
+        if (!StringUtils.isEmpty(pageNumber)) {
+            result.setPageNumber(Integer.parseInt(pageNumber));
+        }
+
+        if (!StringUtils.isEmpty(pageSize)) {
+            result.setPageSize(Integer.parseInt(pageSize));
         }
 
         return result;

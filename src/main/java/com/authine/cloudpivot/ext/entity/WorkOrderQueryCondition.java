@@ -39,4 +39,14 @@ public class WorkOrderQueryCondition {
      */
     private WorkOrderStatus status;
 
+    /**
+     * 页码
+     */
+    private Integer pageNumber;
+
+    /**
+     * 页码数据条数
+     */
+    private Integer pageSize;
+
 }
