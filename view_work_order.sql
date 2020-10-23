@@ -19,9 +19,10 @@ SELECT a.id                                                                  as 
                                                                              as recipient,      -- 接收人
        c.startTime                                                           as startTime,      -- 开始时间
        c.finishTime                                                          as endTime,        -- 结束时间
-       if(ifnull(a.urgent, 'NORMAL') = '', 'NORMAL', upper(a.urgent))        as
-                                                                                urgencyDegree,  -- 紧急程度
-       a.Dateover                                                            as deadline        -- 要求完成日期
+       if(ifnull(a.urgent, 'NORMAL') = '', 'NORMAL', upper(a.urgent))        as urgencyDegree,  -- 紧急程度
+       a.Dateover                                                            as deadline,       -- 要求完成日期
+       c.id                                                                  as workflowId,     -- 流程实例ID
+       null                                                                  as workItemId      -- 任务ID
 from ii84q_work_flow_k_dept a,
      ii84q_departs b,
      biz_workflow_instance c
@@ -47,7 +48,9 @@ SELECT a.id                                                           as id,    
        c.startTime                                                    as startTime,       -- 开始时间
        c.finishTime                                                   as endTime,         -- 结束时间
        if(ifnull(a.urgent, 'NORMAL') = '', 'NORMAL', upper(a.urgent)) as urgencyDegree,   -- 紧急程度
-       a.Dateover                                                     as deadline         -- 要求完成日期
+       a.Dateover                                                     as deadline,        -- 要求完成日期
+       c.id                                                           as workflowId,      -- 流程实例ID
+       null                                                           as workItemId       -- 任务ID
 from ii84q_workFlowDeptN a,
      ii84q_Sheet1601021060092 b,
      biz_workflow_instance c
