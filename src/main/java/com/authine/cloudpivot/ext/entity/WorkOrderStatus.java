@@ -13,10 +13,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum WorkOrderStatus {
-    PROCESSING(""),
+    PROCESSING("处理中", "volcano"),
     ;
 
     private final String text;
-
+    private final String color;
 
 }

@@ -13,9 +13,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UrgencyDegree {
-    NORMAL("一般"),
-    URGENCY("紧急");
+    NORMAL("一般", ""),
+    URGENCY("紧急", "volcano");
 
     private final String text;
 
+    private final String color;
 }
