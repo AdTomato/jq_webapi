@@ -27,7 +27,7 @@ public class WorkOrderQueryCondition {
     /**
      * 紧急程度
      */
-    private UrgencyDegree urgencyDegree;
+    private String urgencyDegree;
 
     /**
      * 是否逾期

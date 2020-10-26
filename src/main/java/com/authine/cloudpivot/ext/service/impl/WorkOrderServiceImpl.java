@@ -1,7 +1,6 @@
 package com.authine.cloudpivot.ext.service.impl;
 
 import com.authine.cloudpivot.engine.api.exceptions.ServiceException;
-import com.authine.cloudpivot.ext.entity.UrgencyDegree;
 import com.authine.cloudpivot.ext.entity.WorkOrder;
 import com.authine.cloudpivot.ext.entity.WorkOrderQueryCondition;
 import com.authine.cloudpivot.ext.entity.WorkOrderStatus;
@@ -56,12 +55,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             result.setTitle(title);
         }
         if (!StringUtils.isEmpty(urgencyDegree)) {
-            try {
-                result.setUrgencyDegree(UrgencyDegree.valueOf(urgencyDegree.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                log.error(e.getMessage(), e);
-                throw new ServiceException(9999, "紧急度参数错误");
-            }
+            result.setUrgencyDegree(urgencyDegree);
         }
 
         if (!StringUtils.isEmpty(overdue)) {

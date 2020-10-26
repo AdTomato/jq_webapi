@@ -32,7 +32,7 @@
     <!-- 通用查询 -->
     <sql id="common-select">
         select *
-        from view_work_order
+        from view_work_order_test
     </sql>
 
     <!-- 通用条件 -->
@@ -43,7 +43,7 @@
         </if>
         <!-- 紧急程度 -->
         <if test="entity.urgencyDegree != null">
-            and urgencyDegree = #{entity.urgencyDegree.name}
+            and urgencyDegree = #{entity.urgencyDegree}
         </if>
         <!-- 是否逾期 -->
         <if test="entity.overdue != null">
@@ -62,12 +62,18 @@
         </if>
     </sql>
 
+    <!-- 排序 -->
+    <sql id="sort">
+        order by createdTime desc
+    </sql>
+
     <select id="getWorkOrderByCreator" resultMap="workOrderInfo">
         <include refid="common-select"/>
         <where>
             <include refid="create-where"/>
             <include refid="common-where"/>
         </where>
+        <include refid="sort"/>
     </select>
 
     <select id="getWorkOrderByRecipient" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
@@ -76,5 +82,6 @@
             <include refid="recipient-where"/>
             <include refid="common-where"/>
         </where>
+        <include refid="sort"/>
     </select>
 </mapper>

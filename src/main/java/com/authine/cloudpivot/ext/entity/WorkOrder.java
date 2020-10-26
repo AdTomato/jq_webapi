@@ -94,7 +94,7 @@ public class WorkOrder {
     /**
      * 紧急程度
      */
-    private UrgencyDegree urgencyDegree;
+    private String urgencyDegree;
 
     /**
      * 流程实例ID
