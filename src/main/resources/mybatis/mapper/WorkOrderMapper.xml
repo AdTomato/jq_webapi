@@ -5,7 +5,7 @@
 
 <mapper namespace="com.authine.cloudpivot.ext.mapper.WorkOrderMapper">
     <resultMap id="workOrderInfo" type="com.authine.cloudpivot.ext.entity.WorkOrder">
-        <result column="executor" property="approver"
+        <result column="approver" property="approver"
                 typeHandler="com.authine.cloudpivot.ext.mybatis.handler.FastjsonTypeHandler"/>
         <result column="department" property="department"
                 typeHandler="com.authine.cloudpivot.ext.mybatis.handler.FastjsonTypeHandler"/>
@@ -76,7 +76,7 @@
         <include refid="sort"/>
     </select>
 
-    <select id="getWorkOrderByRecipient" resultType="com.authine.cloudpivot.ext.entity.WorkOrder">
+    <select id="getWorkOrderByRecipient" resultMap="workOrderInfo">
         <include refid="common-select"/>
         <where>
             <include refid="recipient-where"/>
