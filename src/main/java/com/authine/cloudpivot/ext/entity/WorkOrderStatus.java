@@ -14,7 +14,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum WorkOrderStatus {
     PROCESSING("处理中", "volcano"),
-    ;
+    OVER("已完成", "green");
 
     private final String text;
     private final String color;
