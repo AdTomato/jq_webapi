@@ -2,7 +2,7 @@ package com.authine.cloudpivot.ext.service.impl;
 
 import com.authine.cloudpivot.ext.entity.Dict;
 import com.authine.cloudpivot.ext.entity.UrgencyDegree;
-import com.authine.cloudpivot.ext.entity.WorkOrderStatus;
+import com.authine.cloudpivot.ext.entity.WorkflowStatus;
 import com.authine.cloudpivot.ext.mapper.DictMapper;
 import com.authine.cloudpivot.ext.service.DictService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +33,8 @@ public class DictServiceImpl implements DictService {
             return dictMapper.getDepartmentDict();
         } else if ("urgency_degree".equals(dictItem)) {
             return this.getUrgencyDict();
-        } else if ("work_order_status".equals(dictItem)) {
-            return this.getWorkOrderStatusDict();
+        } else if ("workflow_status".equals(dictItem)) {
+            return this.getWorkflowStatusDict();
         }
         return null;
     }
@@ -62,8 +62,8 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public List<Dict> getWorkOrderStatusDict() {
-        return Arrays.stream(WorkOrderStatus.values())
+    public List<Dict> getWorkflowStatusDict() {
+        return Arrays.stream(WorkflowStatus.values())
                 .map(urgencyDegree -> {
                     Dict dict = new Dict();
                     dict.setCode(urgencyDegree.name());

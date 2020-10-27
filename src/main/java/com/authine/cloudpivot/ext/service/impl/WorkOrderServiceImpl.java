@@ -3,7 +3,7 @@ package com.authine.cloudpivot.ext.service.impl;
 import com.authine.cloudpivot.engine.api.exceptions.ServiceException;
 import com.authine.cloudpivot.ext.entity.WorkOrder;
 import com.authine.cloudpivot.ext.entity.WorkOrderQueryCondition;
-import com.authine.cloudpivot.ext.entity.WorkOrderStatus;
+import com.authine.cloudpivot.ext.entity.WorkflowStatus;
 import com.authine.cloudpivot.ext.mapper.WorkOrderMapper;
 import com.authine.cloudpivot.ext.service.WorkOrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         if (!StringUtils.isEmpty(status)) {
             try {
-                result.setStatus(WorkOrderStatus.valueOf(status.toUpperCase()));
+                result.setStatus(WorkflowStatus.valueOf(status.toUpperCase()));
             } catch (IllegalArgumentException e) {
                 log.error(e.getMessage(), e);
                 throw new ServiceException(-1, "订单状态参数错误");

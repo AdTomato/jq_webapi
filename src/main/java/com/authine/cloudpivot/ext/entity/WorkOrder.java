@@ -84,7 +84,7 @@ public class WorkOrder {
     /**
      * 工单状态
      */
-    private WorkOrderStatus status;
+    private WorkflowStatus status;
 
     /**
      * 子工单

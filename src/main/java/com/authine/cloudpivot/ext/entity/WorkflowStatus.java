@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 工单状态
+ * 工作流状态
  *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -12,9 +12,12 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum WorkOrderStatus {
+public enum WorkflowStatus {
+    DRAFT("草稿", ""),
     PROCESSING("处理中", "volcano"),
-    OVER("已完成", "green");
+    COMPLETED("已完成", "green"),
+    CANCELED("已作废", "grey"),
+    EXCEPTION("异常", "red");
 
     private final String text;
     private final String color;

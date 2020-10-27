@@ -37,7 +37,7 @@ public class WorkOrderQueryCondition {
     /**
      * 工单状态
      */
-    private WorkOrderStatus status;
+    private WorkflowStatus status;
 
     /**
      * 页码

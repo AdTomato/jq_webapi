@@ -42,9 +42,9 @@ public interface DictService {
     List<Dict> getUrgencyDict();
 
     /**
-     * 获取紧工单状态字段
+     * 获取工作流状态字典
      *
      * @return List<DictData>
      */
-    List<Dict> getWorkOrderStatusDict();
+    List<Dict> getWorkflowStatusDict();
 }
