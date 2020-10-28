@@ -64,17 +64,17 @@ public class WorkOrder {
     /**
      * 审批人
      */
-    private List<String> approver;
+    private Set<String> approver;
 
     /**
      * 关联部门
      */
-    private List<String> department;
+    private Set<String> department;
 
     /**
      * 执行人
      */
-    private List<String> executor;
+    private Set<String> executor;
 
     /**
      * 工单任务接收人（审批人，执行人）

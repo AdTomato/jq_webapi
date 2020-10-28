@@ -32,7 +32,7 @@
     <!-- 通用查询 -->
     <sql id="common-select">
         select *
-        from view_work_order_test
+        from view_work_order
     </sql>
 
     <!-- 通用条件 -->
