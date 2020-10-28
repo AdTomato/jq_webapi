@@ -28,4 +28,11 @@ public interface WorkOrderMapper {
      */
     List<WorkOrder> getWorkOrderByRecipient(@Param("entity") WorkOrderQueryCondition condition);
 
+    /**
+     * 获取子工单
+     *
+     * @param id 工单ID
+     * @return List<WorkOrder>
+     */
+    List<WorkOrder> getChildrenWorkOrderById(String id);
 }

@@ -25,21 +25,10 @@ public class WorkOrderController extends BaseController {
     /**
      * 获取用户创建的工单
      *
-     * @param userId 用户 id
+     * @param query 查询条件
      * @return List
      */
-    @GetMapping("/{uid}/create")
-    public ResponseResult<List<WorkOrder>> getCreatedWorkOrders(
-            @PathVariable("uid") String userId,
-            @RequestParam(name = "title", required = false) String title,
-            @RequestParam(name = "urgency_degree", required = false) String urgencyDegree,
-            @RequestParam(name = "overdue", required = false) String overdue,
-            @RequestParam(name = "status", required = false) String status,
-            @RequestParam(name = "page_number", required = false, defaultValue = "1") String pageNumber,
-            @RequestParam(name = "page_size", required = false, defaultValue = "10") String pageSize
-    ) {
-        WorkOrderQueryCondition query = workOrderService
-                .getQuery(userId, title, urgencyDegree, overdue, status, pageNumber, pageSize);
+    public ResponseResult<List<WorkOrder>> getCreatedWorkOrders(WorkOrderQueryCondition query) {
         List<WorkOrder> orders = workOrderService.getWorkOrderByCreator(query);
         return this.getOkResponseResult(orders, "获取用户创建的工单成功");
     }
@@ -47,23 +36,41 @@ public class WorkOrderController extends BaseController {
     /**
      * 获取用户收到的工单
      *
+     * @param query 查询条件
+     * @return List
+     */
+    public ResponseResult<List<WorkOrder>> getReceiveWorkOrders(WorkOrderQueryCondition query) {
+        List<WorkOrder> orders = workOrderService.getWorkOrderByRecipient(query);
+        return this.getOkResponseResult(orders, "获取用户收到的工单成功");
+    }
+
+    /**
+     * 获取用户的工单
+     *
      * @param userId 用户 id
      * @return List
      */
-    @GetMapping("/{uid}/receive")
-    public ResponseResult<List<WorkOrder>> getReceiveWorkOrders(
+    @GetMapping("/{uid}/{type}")
+    public ResponseResult<List<WorkOrder>> getWorkOrders(
             @PathVariable("uid") String userId,
+            @PathVariable("type") String type,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "urgency_degree", required = false) String urgencyDegree,
             @RequestParam(name = "overdue", required = false) String overdue,
             @RequestParam(name = "status", required = false) String status,
             @RequestParam(name = "page_number", required = false, defaultValue = "1") String pageNumber,
-            @RequestParam(name = "page_size", required = false, defaultValue = "10") String pageSize
+            @RequestParam(name = "page_size", required = false, defaultValue = "10") String pageSize,
+            @RequestParam(name = "tree_level", required = false, defaultValue = "3") String treeLevel
     ) {
         WorkOrderQueryCondition query = workOrderService
-                .getQuery(userId, title, urgencyDegree, overdue, status, pageNumber, pageSize);
-        List<WorkOrder> orders = workOrderService.getWorkOrderByRecipient(query);
-        return this.getOkResponseResult(orders, "获取用户收到的工单成功");
+                .getQuery(userId, title, urgencyDegree, overdue, status, pageNumber, pageSize, treeLevel);
+        switch (type) {
+            case "create":
+                return this.getCreatedWorkOrders(query);
+            case "receive":
+                return this.getReceiveWorkOrders(query);
+            default:
+                return null;
+        }
     }
-
 }

@@ -14,6 +14,10 @@ import java.util.List;
  * @time 2020/10/14 10:40
  */
 public interface WorkOrderService {
+    /**
+     * 根节点
+     */
+    String ROOT_NODE = "ROOT";
 
     /**
      * 获取用户创建的工单
@@ -48,6 +52,7 @@ public interface WorkOrderService {
      * @param status        工单状态
      * @param pageNumber    页码
      * @param pageSize      数据条数
+     * @param treeLevel     子工单显示层级
      * @return WorkOrderQueryCondition
      * @throws ServiceException 服务异常
      */
@@ -57,7 +62,8 @@ public interface WorkOrderService {
                                      @Nullable String overdue,
                                      @Nullable String status,
                                      @Nullable String pageNumber,
-                                     @Nullable String pageSize
+                                     @Nullable String pageSize,
+                                     @Nullable String treeLevel
     ) throws ServiceException;
 
 }

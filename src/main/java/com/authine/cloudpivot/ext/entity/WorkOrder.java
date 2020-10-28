@@ -106,6 +106,10 @@ public class WorkOrder {
      */
     private String workItemId;
 
+    /**
+     * 树形节点等级
+     */
+    private int level;
 
     @Override
     public int hashCode() {

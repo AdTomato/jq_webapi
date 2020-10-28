@@ -31,7 +31,22 @@
 
     <!-- 通用查询 -->
     <sql id="common-select">
-        select *
+        select id,
+               ifnull(parentId, 'ROOT') as parentId,
+               title,
+               status,
+               transDepartment,
+               creator,
+               createdTime,
+               department,
+               approver,
+               executor,
+               recipient,
+               startTime,
+               endTime,
+               urgencyDegree,
+               deadline,
+               workflowId
         from view_work_order
     </sql>
 
@@ -83,5 +98,12 @@
             <include refid="common-where"/>
         </where>
         <include refid="sort"/>
+    </select>
+
+    <select id="getChildrenWorkOrderById" resultMap="workOrderInfo">
+        <include refid="common-select"/>
+        <where>
+            and parentId = #{id}
+        </where>
     </select>
 </mapper>

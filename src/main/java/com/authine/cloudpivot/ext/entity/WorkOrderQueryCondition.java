@@ -49,4 +49,9 @@ public class WorkOrderQueryCondition {
      */
     private Integer pageSize;
 
+    /**
+     * 子工单显示层级
+     */
+    private int treeLevel;
+
 }
