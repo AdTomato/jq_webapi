@@ -74,7 +74,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     @Override
     public List<WorkOrder> treeList(List<WorkOrder> list) {
         return this.list2Tree(list, WorkOrder::setChildren,
-                (Predicate<WorkOrder>) workOrder -> ROOT_NODE.equals(workOrder.getParentId()));
+                (Predicate<WorkOrder>) workOrder -> workOrder.getLevel() == 0);
     }
 
     @Override
