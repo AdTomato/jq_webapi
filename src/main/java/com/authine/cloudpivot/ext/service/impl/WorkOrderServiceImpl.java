@@ -57,7 +57,6 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                     String id = workOrder.getId();
                     List<WorkOrder> childrenList = workOrderMapper.getChildrenWorkOrderById(id);
                     Optional.of(childrenList).ifPresent(children -> {
-                        children.forEach(item -> item.setLevel(cLevel + 1));
                         recursiveChildren(collection, childrenList, level);
                     });
                 }
@@ -73,7 +72,15 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Override
     public List<WorkOrder> treeList(List<WorkOrder> list) {
-        return this.list2Tree(list, WorkOrder::setChildren,
+        return this.list2Tree(list, (workOrder, listItem) -> {
+                    Optional.ofNullable(listItem).ifPresent(
+                            l -> {
+                                l.forEach(item -> item.setLevel(workOrder.getLevel() + 1));
+                                workOrder.setChildren(l);
+                            }
+                    );
+                    workOrder.setChildren(listItem);
+                },
                 (Predicate<WorkOrder>) workOrder -> workOrder.getLevel() == 0);
     }
 
@@ -176,15 +183,16 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         });
 
-        return streamSupplier.get()
+        List<N> collect = streamSupplier.get()
+                /* 获取指定节点 */
+                .filter(nodePredicate)
                 /* 设置每个节点的子节点 */
                 .peek(
                         node ->
                                 childConsumer.accept(node, treeCache.get(node.getId()))
                 )
-                /* 获取指定节点 */
-                .filter(nodePredicate)
                 .collect(Collectors.toList());
+        return collect.stream().filter(nodePredicate).collect(Collectors.toList());
     }
 
 }
