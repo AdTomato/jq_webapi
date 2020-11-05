@@ -56,6 +56,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                 if (cLevel < level || level == -1) {
                     String id = workOrder.getId();
                     List<WorkOrder> childrenList = workOrderMapper.getChildrenWorkOrderById(id);
+                    childrenList.forEach(item -> item.setLevel(cLevel + 1));
                     Optional.of(childrenList).ifPresent(children -> {
                         recursiveChildren(collection, childrenList, level);
                     });
@@ -185,7 +186,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         List<N> collect = streamSupplier.get()
                 /* 获取指定节点 */
-                .filter(nodePredicate)
+//                .filter(nodePredicate)
                 /* 设置每个节点的子节点 */
                 .peek(
                         node ->

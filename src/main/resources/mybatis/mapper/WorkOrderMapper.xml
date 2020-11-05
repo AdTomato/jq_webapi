@@ -32,7 +32,7 @@
     <!-- 通用查询 -->
     <sql id="common-select">
         select id,
-               ifnull(parentId, 'ROOT') as parentId,
+               parentId,
                title,
                status,
                transDepartment,
