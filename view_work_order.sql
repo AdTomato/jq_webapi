@@ -1,7 +1,7 @@
 create or replace view view_work_order as
 /* 跨部门工单 */
 SELECT a.id                                                              as id,             -- 工单ID
-       a.kbm                                                             as parentId,       -- 父工单ID
+       COALESCE(a.relevanceDeptN, a.kbm)                                 as parentId,       -- 父工单ID
        a.title                                                           as title,          -- 标题摘要
        a.sequenceStatus                                                  as status,         -- 工单状态
        1                                                                 as transDepartment,-- 是否跨部门工单
