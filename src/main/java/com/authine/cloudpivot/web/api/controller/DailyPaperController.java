@@ -1,19 +1,13 @@
 package com.authine.cloudpivot.web.api.controller;
 
 
-import cn.hutool.core.date.DateUnit;
 import com.authine.cloudpivot.web.api.controller.base.BaseController;
 import com.authine.cloudpivot.web.api.service.DailyPaperService;
 import com.authine.cloudpivot.web.api.view.ResponseResult;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.util.DateUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,5 +77,29 @@ public class DailyPaperController extends BaseController {
         } else {
             return this.getErrResponseResult(null, 404L, "参数不齐");
         }
+    }
+
+    /**
+     * 获取日报接收人
+     *
+     * @return ResponseResult<List < DailyReceiver>>
+     */
+    @GetMapping("/dailyReceiver")
+    public ResponseResult<List<Map<String, Object>>> getDailyReceiver() {
+        String userId = getUserId();
+        List<Map<String, Object>> dailyReceiver = dailyPaperService.getDailyReceiver(userId);
+        return this.getOkResponseResult(dailyReceiver, "获取日报接收人成功");
+    }
+
+    /**
+     * 保存日报接收人
+     *
+     * @return ResponseResult<Void>
+     */
+    @PostMapping("/dailyReceiver")
+    public ResponseResult<Void> addDailyReceiver(@RequestBody List<Map<String, Object>> receiver) {
+        String userId = getUserId();
+        dailyPaperService.saveDailyReceiver(userId, receiver);
+        return this.getOkResponseResult("保存日报接收人成功");
     }
 }

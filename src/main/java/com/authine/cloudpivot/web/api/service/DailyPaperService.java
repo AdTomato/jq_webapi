@@ -1,7 +1,5 @@
 package com.authine.cloudpivot.web.api.service;
 
-import org.apache.ibatis.annotations.Param;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +14,29 @@ public interface DailyPaperService {
     Integer getDailyTimeNum();
 
     //获取视图信息
-    List<Map<String,String>> getviewWorkOrderInfo(String id);
+    List<Map<String, String>> getviewWorkOrderInfo(String id);
 
     //查询某人某天重复日报
     List<String> getRefuseId(String userId, String objectId, Date date);
 
     //数据库删除
-    Integer  batchDelete(List<String> ids);
+    Integer batchDelete(List<String> ids);
+
+    /**
+     * 获取用户的日报接收人
+     *
+     * @param uid 用户ID
+     * @return List<Map < String, ?>>
+     */
+    List<Map<String, Object>> getDailyReceiver(String uid);
+
+    /**
+     * 保存用户的日报接收人
+     *
+     * @param uid      用户ID
+     * @param receiver 日志接收人
+     * @return 日志接收人
+     */
+    void saveDailyReceiver(String uid, List<Map<String, Object>> receiver);
+
 }
