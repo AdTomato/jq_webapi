@@ -49,11 +49,11 @@ SELECT a.id                                            as id,              -- �
        a.creater                                       as creator,         -- 创建人
        a.createdTime                                   as createdTime,     -- 创建时间
        null                                            as department,      -- 关联部门
-       json_extract(a.checkPerson, '$[*].id')          as approver,        -- 审批人
+       json_extract(null, '$[*].id')          as approver,        -- 审批人
        b.executor                                      as executor,        -- 执行人
        json_merge(
-               if(json_valid(a.checkPerson),
-                  json_extract(a.checkPerson, '$[*].id'),
+               if(json_valid(null),
+                  json_extract(null, '$[*].id'),
                   json_array()),
                b.executor)                             as recipient,       -- 接收人
        c.startTime                                     as startTime,       -- 开始时间
