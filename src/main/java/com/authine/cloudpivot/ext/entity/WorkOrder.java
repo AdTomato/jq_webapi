@@ -37,6 +37,11 @@ public class WorkOrder {
     private String title;
 
     /**
+     * 工作内容描述
+     */
+    private String description;
+
+    /**
      * 创建人
      */
     private String creator;

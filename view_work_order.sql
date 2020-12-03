@@ -3,6 +3,7 @@ create or replace view view_work_order as
 SELECT a.id                                                              as id,             -- 工单ID
        COALESCE(a.relevanceDeptN, a.kbm)                                 as parentId,       -- 父工单ID
        a.title                                                           as title,          -- 标题摘要
+       a.content                                                         as description,     -- 工作内容描述
        a.sequenceStatus                                                  as status,         -- 工单状态
        1                                                                 as transDepartment,-- 是否跨部门工单
        a.creater                                                         as creator,        -- 创建人
@@ -44,12 +45,13 @@ union
 SELECT a.id                                            as id,              -- 工单ID
        COALESCE(relevanceDeptN, RelevanceKdept)        as parentId,        -- 父工单ID
        a.title                                         as title,           -- 标题摘要
+       a.workContent                                   as description,     -- 工作内容描述
        a.sequenceStatus                                as status,          -- 工单状态
        0                                               as transDepartment, -- 是否跨部门工单
        a.creater                                       as creator,         -- 创建人
        a.createdTime                                   as createdTime,     -- 创建时间
        null                                            as department,      -- 关联部门
-       json_extract(null, '$[*].id')          as approver,        -- 审批人
+       json_extract(null, '$[*].id')                   as approver,        -- 审批人
        b.executor                                      as executor,        -- 执行人
        json_merge(
                if(json_valid(null),
