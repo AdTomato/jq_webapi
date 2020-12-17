@@ -1,14 +1,19 @@
 package com.authine.cloudpivot.ext.controller;
 
+import com.authine.cloudpivot.engine.api.model.organization.DepartmentModel;
+import com.authine.cloudpivot.ext.entity.Department;
 import com.authine.cloudpivot.ext.entity.WorkOrder;
 import com.authine.cloudpivot.ext.entity.WorkOrderQueryCondition;
+import com.authine.cloudpivot.ext.service.DepartmentService;
 import com.authine.cloudpivot.ext.service.WorkOrderService;
 import com.authine.cloudpivot.web.api.controller.base.BaseController;
 import com.authine.cloudpivot.web.api.view.ResponseResult;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Wu Yujie
@@ -21,6 +26,9 @@ public class WorkOrderController extends BaseController {
 
     @Resource
     private WorkOrderService workOrderService;
+
+    @Resource
+    private DepartmentService departmentService;
 
     /**
      * 获取用户创建的工单
@@ -72,5 +80,21 @@ public class WorkOrderController extends BaseController {
             default:
                 return null;
         }
+    }
+
+    @GetMapping("/departments")
+    public ResponseResult<List<Department>> fdf(@RequestParam(name = "level", defaultValue = "1") int level) {
+        String userId = this.getUserId();
+        List<DepartmentModel> userDepartments = this.getOrganizationFacade().getDepartmentsByUserId(userId);
+        List<String> sourceIds = userDepartments.stream().map(departmentModel -> {
+            String[] split = departmentModel.getQueryCode().split("#");
+            if (level >= 0 && level < split.length) {
+                return split[level];
+            } else  {
+                return "";
+            }
+        }).filter(StringUtils::hasLength).collect(Collectors.toList());
+        List<Department> userDepartment = departmentService.getUserDepartment(sourceIds);
+        return this.getOkResponseResult(userDepartment, "获取用户所在部门成功");
     }
 }
