@@ -1,5 +1,6 @@
 package com.authine.cloudpivot.web.api.service.impl;
 
+import com.authine.cloudpivot.ext.entity.DailyDetail;
 import com.authine.cloudpivot.web.api.mapper.DailyPaperMapper;
 import com.authine.cloudpivot.web.api.service.DailyPaperService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author: weiyao
- * @Date: 2020-08-31
- * @Description: 日报
+ * @author weiyao
+ * @time 2020-08-31
  */
 @Slf4j
 @Service
@@ -33,8 +33,8 @@ public class DailyPaperServiceImpl implements DailyPaperService {
     }
 
     @Override
-    public List<Map<String, String>> getviewWorkOrderInfo(String userid) {
-        return dailyPaperMapper.getviewWorkOrderInfo(userid);
+    public List<DailyDetail> getViewWorkOrderInfo(String userid) {
+        return dailyPaperMapper.getViewWorkOrderInfo(userid);
     }
 
     @Override
@@ -62,4 +62,10 @@ public class DailyPaperServiceImpl implements DailyPaperService {
         log.info("{} => {}", uid, receiver);
         redisTemplate.opsForValue().set("DailyReceiver:" + uid, receiver, Duration.ofDays(7));
     }
+
+    @Override
+    public List<DailyDetail> getDailyDetail(String uid, String date) {
+        return dailyPaperMapper.getDailyDetail(uid, date);
+    }
+
 }
